@@ -6,5 +6,5 @@ use JsonRpc\Spec\UnitInterface;
 
 interface TransportInterface
 {
-    public function send(UnitInterface $data);
+    public function send(UnitInterface $data, $options = []);
 }

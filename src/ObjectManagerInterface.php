@@ -66,7 +66,7 @@ interface ObjectManagerInterface
     /**
      * Commit request queue
      */
-    public function commit();
+    public function commit($options = []);
 
     /**
      * Clear request queue

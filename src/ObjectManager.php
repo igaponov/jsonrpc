@@ -107,7 +107,7 @@ class ObjectManager implements ObjectManagerInterface
         }
     }
 
-    public function commit()
+    public function commit($options = [])
     {
         $requests = array_merge($this->requests, $this->notifications);
         if (empty($requests)) {
@@ -118,7 +118,7 @@ class ObjectManager implements ObjectManagerInterface
             $data = reset($requests);
         }
 
-        $result = $this->transport->send($data);
+        $result = $this->transport->send($data, $options);
         if ($result instanceof BatchResponse) {
             /** @var Response[] $responses */
             $responses = $result->getArrayCopy();
