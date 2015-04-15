@@ -137,6 +137,35 @@ class ObjectManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame([], $manager->getErrorData($id2));
     }
 
+    public function testRemoveRequestMethodDeletesRequest()
+    {
+        $transport = $this->getTransportMock(['send']);
+        $transport->expects($this->never())->method('send');
+
+        $manager = new ObjectManager($transport);
+        $key = $manager->addRequest('req1', []);
+        $manager->removeRequest($key);
+        $manager->commit();
+    }
+
+    public function testCommitNotSendEmptyData()
+    {
+        $transport = $this->getTransportMock(['send']);
+        $transport->expects($this->never())->method('send');
+
+        $manager = new ObjectManager($transport);
+        $manager->commit();
+    }
+
+    /**
+     * @expectedException OutOfBoundsException
+     */
+    public function testThrowsExceptionOnEmptyResponse()
+    {
+        $manager = $this->getManagerMock(null);
+        $manager->getResult(1);
+    }
+
     /**
      * @param null $methods
      * @param null $transport
