@@ -55,4 +55,14 @@ class DecoderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\JsonRpc\Spec\Response', $requestBatch->offsetGet(1));
         $this->assertInstanceOf('\JsonRpc\Spec\Error', $requestBatch->offsetGet(1)->getError());
     }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Json decode error
+     */
+    public function testJsonErrorOnDecode()
+    {
+        $json = 'invalid json';
+        Decoder::decode($json);
+    }
 }
