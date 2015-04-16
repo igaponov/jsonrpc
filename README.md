@@ -2,6 +2,10 @@
 
 [JSON-RPC](http://www.jsonrpc.org/specification) is a stateless, light-weight remote procedure call (RPC) protocol.
 
+[![Build Status](https://travis-ci.org/igaponov/jsonrpc.svg?branch=master)](https://travis-ci.org/igaponov/jsonrpc)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/igaponov/jsonrpc/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/igaponov/jsonrpc/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/igaponov/jsonrpc/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/igaponov/jsonrpc/?branch=master)
+
 ## Request object
 
 A rpc call is represented by sending a [Request object](http://www.jsonrpc.org/specification#request_object) to a Server.
