@@ -21,7 +21,7 @@ abstract class Batch extends ArrayObject implements UnitInterface
     /**
      * @inheritdoc
      */
-    public function __construct($input = [], $flags = 0, $iteratorClass = "ArrayIterator")
+    public function __construct(array $input = [], $flags = 0, $iteratorClass = "ArrayIterator")
     {
         array_walk($input, [$this, 'checkElement']);
         parent::__construct($input, $flags, $iteratorClass);
@@ -34,15 +34,6 @@ abstract class Batch extends ArrayObject implements UnitInterface
     {
         array_walk($input, [$this, 'checkElement']);
         parent::exchangeArray($input);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function append($value)
-    {
-        $this->checkElement($value);
-        parent::append($value);
     }
 
     /**
