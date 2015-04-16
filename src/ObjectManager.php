@@ -7,6 +7,7 @@ use JsonRpc\Spec\BatchResponse;
 use JsonRpc\Spec\Error;
 use JsonRpc\Spec\Request;
 use JsonRpc\Spec\Response;
+use JsonRpc\Spec\UnitInterface;
 
 class ObjectManager implements ObjectManagerInterface
 {
@@ -42,11 +43,12 @@ class ObjectManager implements ObjectManagerInterface
 
     public function addRequest($name, $data, $id = null)
     {
-        return $this->addRequestInternal($name, $data, $id ? : uniqid($name, true));
+        return $this->addRequestInternal($name, $data, $id ?: uniqid($name, true));
     }
 
     /**
      * Add request without response to queue
+     *
      * @param string $name Requests name
      * @param mixed $data
      */
@@ -57,6 +59,7 @@ class ObjectManager implements ObjectManagerInterface
 
     /**
      * Return true if response has error, false otherwise
+     *
      * @param mixed $id Requests id
      * @return boolean
      */
@@ -67,6 +70,7 @@ class ObjectManager implements ObjectManagerInterface
 
     /**
      * Return error message
+     *
      * @param mixed $id Requests id
      * @return string
      */
@@ -77,6 +81,7 @@ class ObjectManager implements ObjectManagerInterface
 
     /**
      * Return error code
+     *
      * @param mixed $id
      * @return integer
      */
@@ -87,6 +92,7 @@ class ObjectManager implements ObjectManagerInterface
 
     /**
      * Return error data
+     *
      * @param mixed $id Requests id
      * @return mixed
      */
@@ -110,23 +116,23 @@ class ObjectManager implements ObjectManagerInterface
     public function commit($options = [])
     {
         $requests = array_merge($this->requests, $this->notifications);
-        if (empty($requests)) {
-            return;
-        } elseif (count($requests) > 1) {
+        if (count($requests) > 1) {
             $data = new BatchRequest($requests);
         } else {
-            $data = reset($requests);
+            $data = array_pop($requests);
         }
 
-        $result = $this->transport->send($data, $options);
-        if ($result instanceof BatchResponse) {
-            /** @var Response[] $responses */
-            $responses = $result->getArrayCopy();
-            foreach ($responses as $response) {
-                $this->addResponse($response);
+        if ($data instanceof UnitInterface) {
+            $result = $this->transport->send($data, $options);
+            if ($result instanceof BatchResponse) {
+                /** @var Response[] $responses */
+                $responses = $result->getArrayCopy();
+                foreach ($responses as $response) {
+                    $this->addResponse($response);
+                }
+            } elseif ($result instanceof Response) {
+                $this->addResponse($result);
             }
-        } elseif ($result instanceof Response) {
-            $this->addResponse($result);
         }
         $this->clear();
     }
@@ -181,9 +187,11 @@ class ObjectManager implements ObjectManagerInterface
                 $this->requests[$key] = $request;
                 $this->keys[$id] = $key;
             }
+
             return $key;
         } else {
             $this->notifications[] = $request;
+
             return null;
         }
     }
