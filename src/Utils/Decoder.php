@@ -14,6 +14,12 @@ class Decoder
 
     const TYPE_REQUEST = 2;
 
+    /**
+     * Decodes json string to one of the Unit objects
+     *
+     * @param string $json
+     * @return BatchRequest|BatchResponse|Request|Response
+     */
     public static function decode($json)
     {
         $json = trim($json);
@@ -35,6 +41,13 @@ class Decoder
         return $return;
     }
 
+    /**
+     * Decodes one unit
+     *
+     * @param int $type
+     * @param array $array
+     * @return Request|Response
+     */
     private static function decodeUnit($type, $array)
     {
         if ($type === self::TYPE_REQUEST) {
