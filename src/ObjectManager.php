@@ -41,6 +41,14 @@ class ObjectManager implements ObjectManagerInterface
         $this->transport = $transport;
     }
 
+    /**
+     * Add request with response to queue
+     *
+     * @param string $name Request name
+     * @param mixed $data
+     * @param null|int|string $id
+     * @return null|string
+     */
     public function addRequest($name, $data, $id = null)
     {
         return $this->addRequestInternal($name, $data, $id ?: uniqid($name, true));
@@ -49,7 +57,7 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Add request without response to queue
      *
-     * @param string $name Requests name
+     * @param string $name Request name
      * @param mixed $data
      */
     public function addNotification($name, $data = null)
@@ -101,11 +109,21 @@ class ObjectManager implements ObjectManagerInterface
         return $this->getResponse($id)->getError()->getData();
     }
 
+    /**
+     * Return result data
+     *
+     * @param mixed $id
+     * @return mixed
+     */
     public function getResult($id)
     {
         return $this->getResponse($id)->getResult();
     }
 
+    /**
+     * Remove request from queue
+     * @param $key
+     */
     public function removeRequest($key)
     {
         if (isset($this->requests[$key])) {
@@ -113,6 +131,11 @@ class ObjectManager implements ObjectManagerInterface
         }
     }
 
+    /**
+     * Commit transaction of all requests
+     *
+     * @param array $options Options for transport
+     */
     public function commit($options = [])
     {
         $requests = array_merge($this->requests, $this->notifications);
@@ -137,6 +160,9 @@ class ObjectManager implements ObjectManagerInterface
         $this->clear();
     }
 
+    /**
+     * Clear queue
+     */
     public function clear()
     {
         $this->requests =
@@ -144,6 +170,10 @@ class ObjectManager implements ObjectManagerInterface
         $this->keys = [];
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     private function hasResponse($id)
     {
         return isset($this->responses[$id]);
