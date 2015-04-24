@@ -203,8 +203,8 @@ class ObjectManager implements ObjectManagerInterface
     }
 
     /**
-     * @param $name
-     * @param $data
+     * @param string $name
+     * @param mixed $data
      * @param null $id
      * @return null|string
      */
