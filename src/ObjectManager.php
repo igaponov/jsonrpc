@@ -205,7 +205,7 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * @param string $name
      * @param mixed $data
-     * @param null $id
+     * @param null|int|string $id
      * @return null|string
      */
     protected function addRequestInternal($name, $data, $id = null)
