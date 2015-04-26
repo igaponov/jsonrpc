@@ -65,6 +65,8 @@ interface ObjectManagerInterface
 
     /**
      * Commit request queue
+     * @param array $options Options for transport
+     * @return
      */
     public function commit($options = []);
 
