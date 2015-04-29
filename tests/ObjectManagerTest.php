@@ -137,6 +137,22 @@ class ObjectManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame([], $manager->getErrorData($id2));
     }
 
+    public function testGetBatchWithOneError()
+    {
+        $transport = $this->getTransportMock(['send']);
+        $manager = $this->getManagerMock(null, $transport);
+        $error = new Error(500, 'Fatal error', []);
+        $response = new Response(null, $error);
+        $transport->expects($this->once())->method('send')->willReturn($response);
+        $id1 = $manager->addRequest('r1', [], 1);
+        $id2 = $manager->addRequest('r2', null, 2);
+        $manager->commit();
+        $this->assertTrue($manager->hasError($id1));
+        $this->assertTrue($manager->hasError($id2));
+        $this->assertSame('Fatal error', $manager->getError($id1));
+        $this->assertSame('Fatal error', $manager->getError($id2));
+    }
+
     public function testRemoveRequestMethodDeletesRequest()
     {
         $transport = $this->getTransportMock(['send']);

@@ -2,6 +2,7 @@
 
 namespace JsonRpc;
 
+use JsonRpc\Spec\Batch;
 use JsonRpc\Spec\BatchRequest;
 use JsonRpc\Spec\BatchResponse;
 use JsonRpc\Spec\Error;
@@ -154,7 +155,11 @@ class ObjectManager implements ObjectManagerInterface
                     $this->addResponse($response);
                 }
             } elseif ($result instanceof Response) {
-                $this->addResponse($result);
+                if ($data instanceof Batch) {
+                    $this->responses = array_fill_keys($this->keys, $result);
+                } else {
+                    $this->addResponse($result);
+                }
             }
         }
         $this->clear();
