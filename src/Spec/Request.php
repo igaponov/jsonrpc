@@ -5,7 +5,7 @@ namespace JsonRpc\Spec;
 /**
  * A rpc call is represented by sending a Request object to a Server.
  */
-class Request extends Unit
+class Request extends Unit implements RequestInterface
 {
     /**
      * @var string A String containing the name of the method to be invoked.

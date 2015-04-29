@@ -7,6 +7,7 @@ use JsonRpc\Spec\BatchResponse;
 use JsonRpc\Spec\Error;
 use JsonRpc\Spec\Request;
 use JsonRpc\Spec\Response;
+use JsonRpc\Spec\UnitInterface;
 
 class Decoder
 {
@@ -18,7 +19,7 @@ class Decoder
      * Decodes json string to one of the Unit objects
      *
      * @param string $json
-     * @return BatchRequest|BatchResponse|Request|Response
+     * @return UnitInterface
      */
     public static function decode($json)
     {

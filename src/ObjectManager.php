@@ -8,7 +8,7 @@ use JsonRpc\Spec\BatchResponse;
 use JsonRpc\Spec\Error;
 use JsonRpc\Spec\Request;
 use JsonRpc\Spec\Response;
-use JsonRpc\Spec\UnitInterface;
+use JsonRpc\Spec\RequestInterface;
 
 class ObjectManager implements ObjectManagerInterface
 {
@@ -146,7 +146,7 @@ class ObjectManager implements ObjectManagerInterface
             $data = array_pop($requests);
         }
 
-        if ($data instanceof UnitInterface) {
+        if ($data instanceof RequestInterface) {
             $result = $this->transport->send($data, $options);
             if ($result instanceof BatchResponse) {
                 /** @var Response[] $responses */
